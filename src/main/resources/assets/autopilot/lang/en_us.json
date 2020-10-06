@@ -1,0 +1,5 @@
+{
+  "keybind.autopilot.flyforward":"Start flying forward",
+  "category.autopilot":"Auto Elytra",
+  "autopilot.disconnect": "You where disconnected because the autopilot arrived at the destination"
+}
