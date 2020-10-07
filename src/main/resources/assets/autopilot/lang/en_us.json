@@ -1,5 +1,6 @@
 {
-  "keybind.autopilot.flyforward":"Start flying forward",
-  "category.autopilot":"Auto Elytra",
+  "keybind.autopilot.flyforwardrockets": "Fly Forward Using Rockets",
+  "keybind.autopilot.flyforward4040": "Fly Forward Using The 4040 Method",
+  "category.autopilot": "Auto Elytra",
   "autopilot.disconnect": "You where disconnected because the autopilot arrived at the destination."
 }

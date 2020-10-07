@@ -1,30 +1,19 @@
 package fhannenheim.autopilot.chat;
 
-import com.mojang.brigadier.CommandDispatcher;
-import fhannenheim.autopilot.Autopilot;
 import fhannenheim.autopilot.FlightHandler;
 import fhannenheim.autopilot.util.FlightType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.ChatScreen;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.command.arguments.Vec3Argument;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.ClientChatEvent;
-import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import org.apache.http.auth.AUTH;
-import org.lwjgl.glfw.GLFW;
 
 
 public class ChatCommandHandler {
     @SubscribeEvent
     public void onChatInput(ClientChatEvent event){
         String message = event.getMessage();
-        Autopilot.LOGGER.warn(message);
         if(message.startsWith("/flyto "))
         {
             String[] commands = message.split(" ");
@@ -33,7 +22,7 @@ public class ChatCommandHandler {
                 event.setCanceled(true);
                 return;
             }
-            Vec3d pos = Vec3d.ZERO;
+            Vec3d pos;
             FlightType flightType = FlightType.ROCKETS;
             try {
                 pos = new Vec3d(Integer.parseInt(commands[1]),0,Integer.parseInt(commands[2]));

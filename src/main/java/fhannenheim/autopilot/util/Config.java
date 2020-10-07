@@ -2,7 +2,6 @@ package fhannenheim.autopilot.util;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.electronwill.nightconfig.core.io.WritingMode;
-import fhannenheim.autopilot.Autopilot;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.common.Mod;
 
@@ -25,15 +24,16 @@ public class Config {
     public static void init(ForgeConfigSpec.Builder config){
         config.comment("Autopilot config");
         flight_level = config
-                .comment("altitude the autopilot flies at. It will slowly rise to the specified y level and then stay there.")
-                .defineInRange("autopilot.flight_level",300,1,1000000);
+                .comment("Altitude the autopilot flies at. It will slowly rise to the specified y level and then stay there.\n" +
+                        "The default is 400 so the Autopilot won't run into blocks")
+                .defineInRange("autopilot.flight_level", 400, 1, 1000000);
         default_flight_type = config
-                .comment("the default flight type that will be used if you don't specify anything in the flyto command.")
-                .defineEnum("autopilot.default_flight_type",FlightType.ROCKETS);
+                .comment("The default flight type that will be used if you don't specify anything in the flyto command.")
+                .defineEnum("autopilot.default_flight_type", FlightType.ROCKETS);
         on_arrive = config
                 .comment("What to do if the autopilot arrives at the destination." +
                         "\nIt can either disconnect, or try to land and then disconnect.")
-                .defineEnum("autopilot.on_arrive",OnArrive.Disconnect);
+                .defineEnum("autopilot.on_arrive", OnArrive.Disconnect);
     }
 
 
