@@ -1,1 +1,2 @@
-Estimated time left + Flying from and to
+Estimated time left + Flying from and to -DONE
+Warn & disconnect when elytra durabillity is low -DONE

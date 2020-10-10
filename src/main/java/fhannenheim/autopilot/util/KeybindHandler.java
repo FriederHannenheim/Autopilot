@@ -1,4 +1,4 @@
-package fhannenheim.autopilot;
+package fhannenheim.autopilot.util;
 
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.client.registry.ClientRegistry;

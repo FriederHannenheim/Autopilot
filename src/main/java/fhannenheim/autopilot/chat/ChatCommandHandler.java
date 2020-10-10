@@ -1,6 +1,6 @@
 package fhannenheim.autopilot.chat;
 
-import fhannenheim.autopilot.FlightHandler;
+import fhannenheim.autopilot.flight.FlightHandler;
 import fhannenheim.autopilot.util.FlightType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.Vec3d;

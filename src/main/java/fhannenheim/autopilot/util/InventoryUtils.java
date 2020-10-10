@@ -44,7 +44,7 @@ public class InventoryUtils {
                         slot = i;
                     }
                 }
-                if (slot != -1) {
+                if (slot != -1 && toServerSlotId(slot) != 6) {
                     PlayerContainer container = player.container;
                     click(container, toServerSlotId(slot));
                     click(container, 6);
@@ -52,6 +52,27 @@ public class InventoryUtils {
                 }
             }
         }
+    }
+
+    public static boolean hasDurableElytra(PlayerEntity player) {
+        PlayerInventory inventory = player.inventory;
+        if (inventory.hasAny(ImmutableSet.of(Items.ELYTRA))) {
+            int slot = -1;
+            for (int i = 0; i < inventory.mainInventory.size(); ++i) {
+                if (inventory.getStackInSlot(i).getItem() == Items.ELYTRA &&
+                        inventory.getStackInSlot(i).getDamage() < inventory.getStackInSlot(i).getMaxDamage() - Config.low_durability.get()) {
+                    slot = i;
+                }
+            }
+            return slot != -1 && toServerSlotId(slot) != 6;
+        } else {
+            return false;
+        }
+    }
+
+    public static int currentElytraDurability(PlayerEntity player) {
+        ItemStack elytra = player.getItemStackFromSlot(EquipmentSlotType.CHEST);
+        return elytra.getMaxDamage() - elytra.getDamage();
     }
 
     private static void click(Container container, int slotId) {

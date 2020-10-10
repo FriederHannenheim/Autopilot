@@ -1,11 +1,10 @@
-package fhannenheim.autopilot;
+package fhannenheim.autopilot.flight;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.tree.RootCommandNode;
 import com.sun.javafx.geom.Vec2d;
-import fhannenheim.autopilot.flight.FlightExecutor;
-import fhannenheim.autopilot.util.FlightType;
-import fhannenheim.autopilot.util.InventoryUtils;
+import fhannenheim.autopilot.Autopilot;
+import fhannenheim.autopilot.util.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.DirtMessageScreen;
 import net.minecraft.client.gui.screen.MainMenuScreen;
@@ -16,6 +15,7 @@ import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.command.arguments.Vec2Argument;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.play.client.CEntityActionPacket;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.event.InputEvent;
@@ -100,16 +100,27 @@ public class FlightHandler {
         }
 
         if (isAutoFlying) {
+            flightExecutor.preventRocket = false;
             if (!playerEntity.isElytraFlying() && !playerEntity.onGround) {
                 // If the player isn't elytra flying but the autopilot is still on the elytra has probably broken. Replace it
                 InventoryUtils.replaceElytra(playerEntity);
 
                 // Start flying again
-                playerEntity.startFallFlying();
                 Minecraft.getInstance().getConnection().sendPacket(new CEntityActionPacket(playerEntity, CEntityActionPacket.Action.START_FALL_FLYING));
             }
             if (destination != null) {
                 playerEntity.lookAt(EntityAnchorArgument.Type.EYES, destination);
+            }
+            Autopilot.LOGGER.info(InventoryUtils.hasDurableElytra(playerEntity));
+            if (InventoryUtils.currentElytraDurability(playerEntity) < Config.low_durability.get() && !InventoryUtils.hasDurableElytra(playerEntity)) {
+                if (Config.on_low_durability.get() == SpecialActions.Alert) {
+                    flightExecutor.preventRocket = true;
+                    playerEntity.playSound(SoundEvents.BLOCK_BELL_USE, 4, 1);
+                } else {
+                    shallDisconnect = true;
+                    isAutoFlying = false;
+                    destination = null;
+                }
             }
 
             if (flightType == FlightType.ROCKETS)

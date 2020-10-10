@@ -1,7 +1,9 @@
 package fhannenheim.autopilot;
 
 import fhannenheim.autopilot.chat.ChatCommandHandler;
+import fhannenheim.autopilot.flight.FlightHandler;
 import fhannenheim.autopilot.util.Config;
+import fhannenheim.autopilot.util.KeybindHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;

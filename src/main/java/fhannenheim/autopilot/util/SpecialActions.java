@@ -1,6 +1,6 @@
 package fhannenheim.autopilot.util;
 
-public enum OnArrive{
-    TryToLand,
+public enum SpecialActions {
+    Alert,
     Disconnect
 }
