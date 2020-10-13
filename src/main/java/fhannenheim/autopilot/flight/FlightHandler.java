@@ -48,9 +48,7 @@ public class FlightHandler {
         if (playerEntity != null && (rockets || angle4040)) {
             destination = null;
             if (!isAutoFlying && !playerEntity.onGround) {
-                if (!playerEntity.isElytraFlying()) {
-                    playerEntity.startFallFlying();
-                }
+                startFlying(playerEntity);
                 if (rockets) flightType = FlightType.ROCKETS;
                 else flightType = FlightType.ANGLE4040;
                 isAutoFlying = true;
@@ -92,7 +90,7 @@ public class FlightHandler {
             destination = null;
             return;
         }
-        if (playerEntity.onGround) {
+        if (playerEntity.onGround && playerEntity.isElytraFlying()) {
             playerEntity.stopFallFlying();
             isAutoFlying = false;
             destination = null;
@@ -106,7 +104,7 @@ public class FlightHandler {
                 InventoryUtils.replaceElytra(playerEntity);
 
                 // Start flying again
-                Minecraft.getInstance().getConnection().sendPacket(new CEntityActionPacket(playerEntity, CEntityActionPacket.Action.START_FALL_FLYING));
+                startFlying(playerEntity);
             }
             if (destination != null) {
                 playerEntity.lookAt(EntityAnchorArgument.Type.EYES, destination);
@@ -128,6 +126,12 @@ public class FlightHandler {
 
             if (flightType == FlightType.ANGLE4040)
                 flightExecutor.fourtyfourtyFlight(playerEntity);
+        }
+    }
+
+    public void startFlying(PlayerEntity playerEntity) {
+        if (playerEntity.tryToStartFallFlying()) {
+            Minecraft.getInstance().getConnection().sendPacket(new CEntityActionPacket(playerEntity, CEntityActionPacket.Action.START_FALL_FLYING));
         }
     }
 
