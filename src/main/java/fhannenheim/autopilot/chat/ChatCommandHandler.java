@@ -3,7 +3,7 @@ package fhannenheim.autopilot.chat;
 import fhannenheim.autopilot.flight.FlightHandler;
 import fhannenheim.autopilot.util.FlightType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.ClientChatEvent;
@@ -22,10 +22,10 @@ public class ChatCommandHandler {
                 event.setCanceled(true);
                 return;
             }
-            Vec3d pos;
+            Vector3d pos;
             FlightType flightType = FlightType.ROCKETS;
             try {
-                pos = new Vec3d(Integer.parseInt(commands[1]),0,Integer.parseInt(commands[2]));
+                pos = new Vector3d(Integer.parseInt(commands[1]), 0, Integer.parseInt(commands[2]));
             } catch (NumberFormatException e){
                 showSyntax();
                 event.setCanceled(true);
@@ -51,7 +51,7 @@ public class ChatCommandHandler {
     }
 
     private void showSyntax(){
-        Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(new StringTextComponent("Invalid Syntax").applyTextStyle(TextFormatting.RED));
+        Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(new StringTextComponent("Invalid Syntax").mergeStyle(TextFormatting.RED));
         Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(new StringTextComponent("Usage:\n" +
                 "    /flyto ~ ~ [rockets/4040]\n" +
                 "Example:\n    /flyto 123 456 rockets"));

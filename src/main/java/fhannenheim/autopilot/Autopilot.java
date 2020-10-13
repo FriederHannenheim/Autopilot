@@ -9,7 +9,6 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 import org.apache.logging.log4j.LogManager;
@@ -22,7 +21,6 @@ public class Autopilot {
     public static final String MOD_ID = "autopilot";
 
     public Autopilot() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CONFIG);
@@ -30,10 +28,6 @@ public class Autopilot {
 
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new ChatCommandHandler());
-    }
-
-    private void setup(final FMLCommonSetupEvent event) {
-
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
