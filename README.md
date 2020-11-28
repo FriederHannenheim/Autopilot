@@ -1,4 +1,4 @@
 # Autopilot
 Autopilot is a client-sided Minecraft mod that adds an autopilot for the elytra.
 
-This mod is still in development. It will soon be published on Curseforge
+This mod can be downloaded here: https://www.curseforge.com/minecraft/mc-mods/autopilot
