@@ -52,6 +52,10 @@ public class FlightHandler {
                 if (rockets) flightType = FlightType.ROCKETS;
                 else flightType = FlightType.ANGLE4040;
                 isAutoFlying = true;
+
+                if (isAutoFlying && flightType == FlightType.ANGLE4040) {
+                    flightExecutor.isDescending = true;
+                }
             } else {
                 isAutoFlying = false;
             }
