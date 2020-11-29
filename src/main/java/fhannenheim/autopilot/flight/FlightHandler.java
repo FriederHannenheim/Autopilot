@@ -3,7 +3,6 @@ package fhannenheim.autopilot.flight;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.tree.RootCommandNode;
 import com.sun.javafx.geom.Vec2d;
-import fhannenheim.autopilot.Autopilot;
 import fhannenheim.autopilot.util.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.DirtMessageScreen;
@@ -113,7 +112,6 @@ public class FlightHandler {
             if (destination != null) {
                 playerEntity.lookAt(EntityAnchorArgument.Type.EYES, destination);
             }
-            Autopilot.LOGGER.info(InventoryUtils.hasDurableElytra(playerEntity));
             if (InventoryUtils.currentElytraDurability(playerEntity) < Config.low_durability.get() && !InventoryUtils.hasDurableElytra(playerEntity)) {
                 if (Config.on_low_durability.get() == SpecialActions.Alert) {
                     flightExecutor.preventRocket = true;

@@ -11,7 +11,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.play.client.CPlayerTryUseItemPacket;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvents;
-import net.minecraftforge.client.MinecraftForgeClient;
 
 public class FlightExecutor {
     public FlightHandler flightHandler;
@@ -23,7 +22,6 @@ public class FlightExecutor {
     public boolean pullDown;
     public boolean pullUp;
     public double currentVelocity;
-    public ElytraConfig config = new ElytraConfig();
 
     public FlightExecutor(FlightHandler flightHandler) {
         this.flightHandler = flightHandler;
@@ -59,14 +57,13 @@ public class FlightExecutor {
         }
     }
 
-    // values from https://www.reddit.com/r/Minecraft/comments/5ic9la/using_a_genetic_algorithm_to_power_infinite/
     public void fourtyfourtyFlight(PlayerEntity playerEntity) {
         this.currentVelocity = getVelocity(playerEntity);
 
         if (this.isDescending) {
             this.pullUp = false;
             this.pullDown = true;
-            if (this.currentVelocity >= this.config.pullDownMaxVelocity) {
+            if (this.currentVelocity >= ElytraConfig.pullDownMaxVelocity) {
                 this.isDescending = false;
                 this.pullDown = false;
                 this.pullUp = true;
@@ -74,7 +71,7 @@ public class FlightExecutor {
         } else {
             this.pullUp = true;
             this.pullDown = false;
-            if (this.currentVelocity <= this.config.pullUpMinVelocity) {
+            if (this.currentVelocity <= ElytraConfig.pullUpMinVelocity) {
                 this.isDescending = true;
                 this.pullDown = true;
                 this.pullUp = false;
@@ -83,16 +80,16 @@ public class FlightExecutor {
 
 
         if (this.pullUp) {
-            playerEntity.rotationPitch = (float)((double)playerEntity.rotationPitch - this.config.pullUpSpeed);
-            if ((double)playerEntity.rotationPitch <= this.config.pullUpAngle) {
-                playerEntity.rotationPitch = (float)this.config.pullUpAngle;
+            playerEntity.rotationPitch = (float)((double)playerEntity.rotationPitch - ElytraConfig.pullUpSpeed);
+            if ((double)playerEntity.rotationPitch <= ElytraConfig.pullUpAngle) {
+                playerEntity.rotationPitch = (float)ElytraConfig.pullUpAngle;
             }
         }
 
         if (this.pullDown) {
-            playerEntity.rotationPitch = (float)((double)playerEntity.rotationPitch + this.config.pullDownSpeed);
-            if ((double)playerEntity.rotationPitch >= this.config.pullDownAngle) {
-                playerEntity.rotationPitch = (float)this.config.pullDownAngle;
+            playerEntity.rotationPitch = (float)((double)playerEntity.rotationPitch + ElytraConfig.pullDownSpeed);
+            if ((double)playerEntity.rotationPitch >= ElytraConfig.pullDownAngle) {
+                playerEntity.rotationPitch = (float)ElytraConfig.pullDownAngle;
             }
         }
 
