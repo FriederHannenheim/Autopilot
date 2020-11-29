@@ -64,11 +64,9 @@ public class FlightExecutor {
         this.currentVelocity = getVelocity(playerEntity);
 
         if (this.isDescending) {
-            Autopilot.LOGGER.warn("here3");
             this.pullUp = false;
             this.pullDown = true;
             if (this.currentVelocity >= this.config.pullDownMaxVelocity) {
-                Autopilot.LOGGER.warn("here1");
                 this.isDescending = false;
                 this.pullDown = false;
                 this.pullUp = true;
