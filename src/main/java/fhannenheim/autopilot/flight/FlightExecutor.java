@@ -3,6 +3,7 @@ package fhannenheim.autopilot.flight;
 import com.sun.javafx.geom.Vec2d;
 import fhannenheim.autopilot.Autopilot;
 import fhannenheim.autopilot.util.Config;
+import fhannenheim.autopilot.util.ElytraConfig;
 import fhannenheim.autopilot.util.InventoryUtils;
 import fhannenheim.autopilot.util.SpecialActions;
 import net.minecraft.client.Minecraft;
@@ -16,6 +17,11 @@ public class FlightExecutor {
     public int ticksSinceRocket;
     private FlightPhase flightPhase;
     public boolean preventRocket;
+
+    public boolean isDescending;
+    public boolean pullDown;
+    public boolean pullUp;
+    public double currentVelocity;
 
     public FlightExecutor(FlightHandler flightHandler) {
         this.flightHandler = flightHandler;
@@ -51,35 +57,42 @@ public class FlightExecutor {
         }
     }
 
-    // values from https://www.reddit.com/r/Minecraft/comments/5ic9la/using_a_genetic_algorithm_to_power_infinite/
     public void fourtyfourtyFlight(PlayerEntity playerEntity) {
-        // Place new rockets in hand if needed
-        InventoryUtils.refillRockets(playerEntity);
+        this.currentVelocity = getVelocity(playerEntity);
 
-        // apparently switch statements can't handle null-objects
-        flightPhase = flightPhase == null ? FlightPhase.DESCEND : flightPhase;
-
-        switch (flightPhase) {
-            case ASCEND:
-                playerEntity.rotationPitch = -49.44969f;
-                break;
-            case DESCEND:
-                playerEntity.rotationPitch = 37.7458839f;
-                break;
-            default:
-                flightPhase = FlightPhase.DESCEND;
-                break;
+        if (this.isDescending) {
+            this.pullUp = false;
+            this.pullDown = true;
+            if (this.currentVelocity >= ElytraConfig.pullDownMaxVelocity) {
+                this.isDescending = false;
+                this.pullDown = false;
+                this.pullUp = true;
+            }
+        } else {
+            this.pullUp = true;
+            this.pullDown = false;
+            if (this.currentVelocity <= ElytraConfig.pullUpMinVelocity) {
+                this.isDescending = true;
+                this.pullDown = true;
+                this.pullUp = false;
+            }
         }
 
-        double velocity = getVelocity(playerEntity);
-        if (flightPhase == FlightPhase.DESCEND && velocity > 2.08719635f)
-            flightPhase = FlightPhase.ASCEND;
-        else if (flightPhase == FlightPhase.ASCEND && velocity < 0.224041611f)
-            flightPhase = FlightPhase.DESCEND;
-        if (flightPhase == FlightPhase.ASCEND && playerEntity.getPosY() < Config.flight_level.get() && velocity < 0.75f) {
-            useRocket();
-            ticksSinceRocket = 0;
+
+        if (this.pullUp) {
+            playerEntity.rotationPitch = (float)((double)playerEntity.rotationPitch - ElytraConfig.pullUpSpeed);
+            if ((double)playerEntity.rotationPitch <= ElytraConfig.pullUpAngle) {
+                playerEntity.rotationPitch = (float)ElytraConfig.pullUpAngle;
+            }
         }
+
+        if (this.pullDown) {
+            playerEntity.rotationPitch = (float)((double)playerEntity.rotationPitch + ElytraConfig.pullDownSpeed);
+            if ((double)playerEntity.rotationPitch >= ElytraConfig.pullDownAngle) {
+                playerEntity.rotationPitch = (float)ElytraConfig.pullDownAngle;
+            }
+        }
+
         if (flightHandler.destination != null && Vec2d.distance(flightHandler.destination.x, flightHandler.destination.z, playerEntity.getPosX(), playerEntity.getPosZ()) < 3) {
             if (Config.on_arrive.get() == SpecialActions.Disconnect) {
                 flightHandler.shallDisconnect = true;
