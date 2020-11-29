@@ -15,7 +15,8 @@ import net.minecraft.command.arguments.Vec2Argument;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.play.client.CEntityActionPacket;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.event.TickEvent;
@@ -28,7 +29,7 @@ public class FlightHandler {
     public static FlightHandler instance;
     public FlightExecutor flightExecutor;
     public boolean isAutoFlying;
-    public Vec3d destination;
+    public Vector3d destination;
     public FlightType flightType;
     public boolean shallDisconnect;
     private double totalDistance;
@@ -46,7 +47,7 @@ public class FlightHandler {
         boolean angle4040 = KeybindHandler.flyForward4040.isPressed();
         if (playerEntity != null && (rockets || angle4040)) {
             destination = null;
-            if (!isAutoFlying && !playerEntity.onGround) {
+            if (!isAutoFlying && !playerEntity.isOnGround()) {
                 startFlying(playerEntity);
                 if (rockets) flightType = FlightType.ROCKETS;
                 else flightType = FlightType.ANGLE4040;
@@ -61,7 +62,7 @@ public class FlightHandler {
         }
     }
 
-    public void flyTo(Vec3d pos, FlightType type) {
+    public void flyTo(Vector3d pos, FlightType type) {
         destination = pos;
         this.flightType = type;
         isAutoFlying = true;
@@ -93,7 +94,7 @@ public class FlightHandler {
             destination = null;
             return;
         }
-        if (playerEntity.onGround && playerEntity.isElytraFlying()) {
+        if (playerEntity.isOnGround() && playerEntity.isElytraFlying()) {
             playerEntity.stopFallFlying();
             isAutoFlying = false;
             destination = null;
@@ -102,7 +103,7 @@ public class FlightHandler {
 
         if (isAutoFlying) {
             flightExecutor.preventRocket = false;
-            if (!playerEntity.isElytraFlying() && !playerEntity.onGround) {
+            if (!playerEntity.isElytraFlying() && !playerEntity.isOnGround()) {
                 // If the player isn't elytra flying but the autopilot is still on the elytra has probably broken. Replace it
                 InventoryUtils.replaceElytra(playerEntity);
 
@@ -166,6 +167,6 @@ public class FlightHandler {
                 + "%";
         if (new Vec2d(destination.x, destination.z).distance(minecraft.player.getPosX(), minecraft.player.getPosZ()) <= 3)
             text = "Arrived at destination";
-        minecraft.ingameGUI.setOverlayMessage(text, false);
+        minecraft.ingameGUI.setOverlayMessage(new StringTextComponent(text), false);
     }
 }
