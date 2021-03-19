@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "autopilot",
+  "version": "${version}",
+  "name": "Autopilot",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "ISC",
+  "icon": "assets/autopilot/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "fhannenheim.autopilot.AutopilotClient"
+    ]
+  },
+  "mixins": [
+    "autopilot.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.16.5"
+  }
+}

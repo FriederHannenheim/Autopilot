@@ -1,0 +1,7 @@
+{
+  "text.autoconfig.elytraconfig.option.flight_level": "Altitude",
+  "text.autoconfig.elytraconfig.option.default_flight_type": "Default Flight Type",
+  "text.autoconfig.elytraconfig.option.on_arrive": "Action On Arrival",
+  "text.autoconfig.elytraconfig.option.low_durability": "Low Durability",
+  "text.autoconfig.elytraconfig.option.on_low_durability": "On Low Durability"
+}
