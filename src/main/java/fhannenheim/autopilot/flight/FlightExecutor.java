@@ -106,11 +106,7 @@ public class FlightExecutor {
     }
 
     private double getVelocity(PlayerEntity playerEntity) {
-        return Math.sqrt(
-                Math.pow(playerEntity.getMotion().x, 2) +
-                        Math.pow(playerEntity.getMotion().y, 2) +
-                        Math.pow(playerEntity.getMotion().z, 2)
-        );
+        return playerEntity.getMotion().length();
     }
 
     @SuppressWarnings("ConstantConditions")

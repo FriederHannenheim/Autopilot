@@ -15,6 +15,7 @@ import net.minecraft.command.arguments.Vec2Argument;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.play.client.CEntityActionPacket;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -111,7 +112,11 @@ public class FlightHandler {
                 startFlying(playerEntity);
             }
             if (destination != null) {
-                playerEntity.lookAt(EntityAnchorArgument.Type.EYES, destination);
+                Vector3d vec3d = EntityAnchorArgument.Type.EYES.apply(playerEntity);
+                double d = destination.x - vec3d.x;
+                double f = destination.z - vec3d.z;
+
+                playerEntity.rotationYaw = MathHelper.wrapDegrees((float)(MathHelper.atan2(f,d) * 57.2957763671875D) - 90.0F);
             }
             if (InventoryUtils.currentElytraDurability(playerEntity) < Config.low_durability.get() && !InventoryUtils.hasDurableElytra(playerEntity)) {
                 if (Config.on_low_durability.get() == SpecialActions.Alert) {
