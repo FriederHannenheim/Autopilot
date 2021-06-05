@@ -11,18 +11,24 @@ public class ElytraConfig implements ConfigData {
     @Comment("Altitude the autopilot flies at. It will slowly rise to the specified y level and then stay there. The default is 350 so the Autopilot won't run into blocks")
     public int flight_level = 350;
 
-    @Comment("The default flight type that will be used if you don't specify anything in the flyto command.")
-    public FlightType default_flight_type;
+    @Comment("The default flight type that will be used if you don't specify anything in the flyto command.\n" +
+            "Accepted values: ROCKETS ANGLE4040")
+    public FlightType default_flight_type = FlightType.ROCKETS;
 
-    @Comment("What to do if the autopilot arrives at the destination. It can either disconnect, or try to land and alert you.")
-    public SpecialActions on_arrive;
+    @Comment("What to do if the autopilot arrives at the destination. It can either disconnect, or try to land and alert you.\n" +
+             "Accepted values: Alert Disconnect")
+    public SpecialActions on_arrive = SpecialActions.Alert;
 
     @ConfigEntry.BoundedDiscrete(min = 1, max = 200)
     @Comment("What is defined as low durability")
     public int low_durability = 20;
 
-    @Comment("What to do if the current elytra has low durability and there's no other to replace it in your inventory. It can either disconnect, or try to land and alert you.")
-    public SpecialActions on_low_durability;
+    @Comment("What to do if the current Elytra has low durability and there's no other to replace it in your inventory. It can either disconnect, or try to land and alert you.\n" +
+            "Accepted values: Alert Disconnect")
+    public SpecialActions on_low_durability = SpecialActions.Alert;
+
+    @Comment("Use a rocket when speed is lower than this value in blocks per second.")
+    public float rocket_speed = 1;
 
     @Override
     public void validatePostLoad() throws ValidationException {

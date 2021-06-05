@@ -13,7 +13,6 @@ import net.minecraft.util.Hand;
 public class FlightExecutor {
     public FlightHandler flightHandler;
     public int ticksSinceRocket;
-    private FlightPhase flightPhase;
     public boolean preventRocket;
 
     public boolean isDescending;
@@ -37,7 +36,7 @@ public class FlightExecutor {
 
         if (flightHandler.destination == null || Vec2d.distance(flightHandler.destination.x, flightHandler.destination.z, playerEntity.getX(), playerEntity.getZ()) > 3) {
             // If the player is lower than the flying altitude and is flying too slow, use a rocket to boost speed
-            if (Math.sqrt(Math.pow(playerEntity.getVelocity().x, 2) + Math.pow(playerEntity.getVelocity().z, 2)) < (playerEntity.getY() + 10 < AutopilotClient.CONFIG.flight_level ? 1 : 1.5f)
+            if (Math.sqrt(Math.pow(playerEntity.getVelocity().x, 2) + Math.pow(playerEntity.getVelocity().z, 2)) < AutopilotClient.CONFIG.rocket_speed
                     && playerEntity.getPos().getY() < AutopilotClient.CONFIG.flight_level
                     && ticksSinceRocket > 3) {
                 useRocket();
@@ -54,9 +53,12 @@ public class FlightExecutor {
             }
         }
     }
-
+    // Btw most of this is not my code. Someone made a pull request on the forge version and I just copy pasted that here. So don't shame me for it
     public void fourtyfourtyFlight(PlayerEntity playerEntity) {
         this.currentVelocity = getVelocity(playerEntity);
+
+        if(playerEntity.getPos().y > AutopilotClient.CONFIG.flight_level)
+            isDescending = true;
 
         if (this.isDescending) {
             this.pullUp = false;
@@ -116,11 +118,6 @@ public class FlightExecutor {
         } catch (NullPointerException e) {
             AutopilotClient.LOGGER.warn("Couldn't fire rocket");
         }
-    }
-
-    private enum FlightPhase {
-        ASCEND,
-        DESCEND,
     }
     private static class FlightValues{
         public static final double pullUpAngle = -46.633514D;

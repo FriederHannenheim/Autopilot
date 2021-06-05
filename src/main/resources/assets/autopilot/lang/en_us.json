@@ -3,5 +3,9 @@
   "text.autoconfig.elytraconfig.option.default_flight_type": "Default Flight Type",
   "text.autoconfig.elytraconfig.option.on_arrive": "Action On Arrival",
   "text.autoconfig.elytraconfig.option.low_durability": "Low Durability",
-  "text.autoconfig.elytraconfig.option.on_low_durability": "On Low Durability"
+  "text.autoconfig.elytraconfig.option.on_low_durability": "On Low Durability",
+  "key.autopilot.rockets": "Activate rocket flight",
+  "key.autopilot.4040": "Activate 4040 flight",
+  "category.autopilot": "Autopilot keys",
+  "autopilot.disconnect": "Disconnected"
 }

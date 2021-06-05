@@ -1,5 +1,6 @@
 package fhannenheim.autopilot.mixin;
 
+import fhannenheim.autopilot.AutopilotClient;
 import fhannenheim.autopilot.flight.FlightHandler;
 import fhannenheim.autopilot.util.FlightType;
 import net.minecraft.client.MinecraftClient;
@@ -16,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientPlayerEntity.class)
 public class ClientPlayerEntityMixin {
+
     @Inject(at = @At("HEAD"), method = "sendChatMessage(Ljava/lang/String;)V", cancellable = true)
     public void checkForFlytoCommand(String message,CallbackInfo info){
         if(message.startsWith("/flyto")){
@@ -26,7 +28,7 @@ public class ClientPlayerEntityMixin {
                 return;
             }
             Vec3d pos;
-            FlightType flightType = FlightType.ROCKETS;
+            FlightType flightType = AutopilotClient.CONFIG.default_flight_type;
             try {
                 pos = new Vec3d(Integer.parseInt(commands[1]), 0, Integer.parseInt(commands[2]));
             } catch (NumberFormatException e){
@@ -36,6 +38,7 @@ public class ClientPlayerEntityMixin {
             if(commands.length > 3){
                 switch (commands[3]){
                     case "rockets":
+                        flightType = FlightType.ROCKETS;
                         break;
                     case "4040":
                         flightType = FlightType.ANGLE4040;

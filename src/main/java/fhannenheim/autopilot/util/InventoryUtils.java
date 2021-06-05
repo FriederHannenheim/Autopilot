@@ -24,7 +24,6 @@ public class InventoryUtils {
                     }
                 }
                 if (slot != -1) {
-                    AutopilotClient.LOGGER.info("Hekc");
                     ScreenHandler container = player.currentScreenHandler;
                     click(container, toServerSlotId(slot));
                     click(container, toServerSlotId(inventory.selectedSlot));
